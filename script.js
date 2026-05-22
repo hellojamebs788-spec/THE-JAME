@@ -16,8 +16,8 @@
 // ══════════════════════════════════════════════════
 
 const DEFAULT_CONFIG = {
-  supabaseUrl:     '',
-  supabaseKey:     '',
+  supabaseUrl:     'https://afkjxrzuvuxxjtjypzcq.supabase.co',
+  supabaseKey:     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFma2p4cnp1dnV4eGp0anlwemNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0MjgwMDMsImV4cCI6MjA5NTAwNDAwM30.9o0J3QdU6Oo6VA8WyUIRCho9MZWlxtO6QmLukeCpKvY',
   monthlySalary:   50000,
   fixedCosts:      15000,
   savingsTarget:   5000,
