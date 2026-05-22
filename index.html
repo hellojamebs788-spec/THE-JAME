@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Money Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+</head>
+<body>
+
+  <div class="container">
+    <h1>💰 Money Tracker</h1>
+
+    <div class="summary">
+      <div class="card income">
+        <h2>รายรับ</h2>
+        <p id="totalIncome">0 บาท</p>
+      </div>
+
+      <div class="card expense">
+        <h2>รายจ่าย</h2>
+        <p id="totalExpense">0 บาท</p>
+      </div>
+
+      <div class="card balance">
+        <h2>เงินคงเหลือ</h2>
+        <p id="balance">0 บาท</p>
+      </div>
+
+      <div class="card debt">
+        <h2>หนี้สิน</h2>
+        <p id="totalDebt">0 บาท</p>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2>เพิ่มรายการ</h2>
+
+      <input type="text" id="title" placeholder="ชื่อรายการ">
+
+      <input type="number" id="amount" placeholder="จำนวนเงิน">
+
+      <select id="type">
+        <option value="income">รายรับ</option>
+        <option value="expense">รายจ่าย</option>
+        <option value="debt">หนี้สิน</option>
+      </select>
+
+      <button onclick="addTransaction()">เพิ่มรายการ</button>
+    </div>
+
+    <div class="upload-section">
+      <h2>อ่านสลิปอัตโนมัติ</h2>
+
+      <input type="file" id="slipInput" accept="image/*">
+      <button onclick="readSlip()">อ่านสลิป</button>
+
+      <pre id="ocrResult"></pre>
+    </div>
+
+    <div class="history">
+      <h2>รายการทั้งหมด</h2>
+      <ul id="transactionList"></ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
