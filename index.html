@@ -1,82 +1,495 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Money Tracker Supabase</title>
-
-  <link rel="stylesheet" href="style.css"/>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinFlow — Personal Finance & Debt Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 </head>
 <body>
+  <!-- ── SIDEBAR NAV ── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-mark">FF</span>
+      <span class="logo-text">FinFlow</span>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-btn active" data-section="dashboard">
+        <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+        Dashboard
+      </button>
+      <button class="nav-btn" data-section="transactions">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V8h16v10z"/></svg>
+        Transactions
+      </button>
+      <button class="nav-btn" data-section="debts">
+        <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+        Debts
+      </button>
+      <button class="nav-btn" data-section="savings">
+        <svg viewBox="0 0 24 24"><path d="M11.5 2C6.81 2 3 5.81 3 10.5S6.81 19 11.5 19h.5v3c4.86-2.34 8-7 8-11.5C20 5.81 16.19 2 11.5 2zm1 14.5h-2v-2h2v2zm0-4h-2c0-3.25 3-3 3-5 0-1.1-.9-2-2-2s-2 .9-2 2h-2c0-2.21 1.79-4 4-4s4 1.79 4 4c0 2.5-3 2.75-3 5z"/></svg>
+        Savings
+      </button>
+      <button class="nav-btn" data-section="upload">
+        <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+        Upload Slip
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="settings-btn" id="openSettings">
+        <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+        Settings
+      </button>
+    </div>
+  </aside>
 
-  <div class="container">
+  <!-- ── MAIN CONTENT ── -->
+  <main class="main-content">
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle">
+        <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+      </button>
+      <div class="topbar-title" id="sectionTitle">Dashboard</div>
+      <div class="topbar-right">
+        <span class="today-badge" id="todayDate"></span>
+        <div class="connection-dot" id="connectionDot" title="Database status"></div>
+      </div>
+    </header>
 
-    <h1>💰 Money Tracker</h1>
-
-    <div class="summary">
-      <div class="card income">
-        <h2>รายรับ</h2>
-        <p id="totalIncome">0 บาท</p>
+    <!-- ──────────────────────────────── -->
+    <!-- SECTION: DASHBOARD              -->
+    <!-- ──────────────────────────────── -->
+    <section class="section active" id="section-dashboard">
+      <!-- Stat cards row -->
+      <div class="stat-grid">
+        <div class="stat-card accent-gold">
+          <div class="stat-label">Daily Budget</div>
+          <div class="stat-value" id="dailyBudget">฿0</div>
+          <div class="stat-sub">Remaining today</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Spent Today</div>
+          <div class="stat-value danger" id="spentToday">฿0</div>
+          <div class="stat-sub">From <span id="txCountToday">0</span> transactions</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Debt</div>
+          <div class="stat-value" id="totalDebtStat">฿0</div>
+          <div class="stat-sub" id="debtMonthlyPaymentStat">฿0 /month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Savings Progress</div>
+          <div class="stat-value success" id="totalSavingsStat">฿0</div>
+          <div class="stat-sub" id="savingsTargetStat">of ฿0 goal</div>
+        </div>
       </div>
 
-      <div class="card expense">
-        <h2>รายจ่าย</h2>
-        <p id="totalExpense">0 บาท</p>
+      <!-- Daily budget progress bar -->
+      <div class="card">
+        <div class="card-header">
+          <h2>Today's Spending</h2>
+          <span class="card-badge" id="budgetStatus">On Track</span>
+        </div>
+        <div class="budget-bar-wrap">
+          <div class="budget-bar">
+            <div class="budget-bar-fill" id="budgetBarFill" style="width:0%"></div>
+          </div>
+          <div class="budget-bar-labels">
+            <span id="budgetBarSpent">฿0 spent</span>
+            <span id="budgetBarTotal">฿0 budget</span>
+          </div>
+        </div>
       </div>
 
-      <div class="card balance">
-        <h2>เงินคงเหลือ</h2>
-        <p id="balance">0 บาท</p>
+      <!-- Recent transactions -->
+      <div class="card">
+        <div class="card-header">
+          <h2>Recent Transactions</h2>
+          <button class="btn-text" data-section="transactions">View all →</button>
+        </div>
+        <div class="tx-list" id="recentTxList">
+          <div class="empty-state">No transactions yet</div>
+        </div>
       </div>
 
-      <div class="card debt">
-        <h2>หนี้สิน</h2>
-        <p id="totalDebt">0 บาท</p>
+      <!-- Debt snapshot -->
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header"><h2>Debt Snapshot</h2></div>
+          <div class="debt-list" id="dashDebtList">
+            <div class="empty-state">No debts tracked</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h2>Savings Goals</h2></div>
+          <div class="savings-list" id="dashSavingsList">
+            <div class="empty-state">No savings goals</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────── -->
+    <!-- SECTION: TRANSACTIONS           -->
+    <!-- ──────────────────────────────── -->
+    <section class="section" id="section-transactions">
+      <div class="section-actions">
+        <button class="btn-primary" id="addTxBtn">+ Add Transaction</button>
+        <div class="filter-row">
+          <select class="filter-select" id="txFilter">
+            <option value="all">All Types</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
+          <input type="month" class="filter-input" id="txMonthFilter" />
+        </div>
+      </div>
+      <div class="card">
+        <table class="data-table" id="txTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Category</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="txTableBody">
+            <tr><td colspan="6" class="empty-state">No transactions found</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────── -->
+    <!-- SECTION: DEBTS                  -->
+    <!-- ──────────────────────────────── -->
+    <section class="section" id="section-debts">
+      <div class="section-actions">
+        <button class="btn-primary" id="addDebtBtn">+ Add Debt</button>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card accent-red">
+          <div class="stat-label">Total Outstanding</div>
+          <div class="stat-value" id="totalDebtBig">฿0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Monthly Payments</div>
+          <div class="stat-value" id="totalMonthlyPayment">฿0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Avg. Interest Rate</div>
+          <div class="stat-value" id="avgInterestRate">0%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Debt-Free In</div>
+          <div class="stat-value success" id="debtFreeEstimate">—</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="debt-cards" id="debtCardsContainer">
+          <div class="empty-state">No debts added yet</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────── -->
+    <!-- SECTION: SAVINGS                -->
+    <!-- ──────────────────────────────── -->
+    <section class="section" id="section-savings">
+      <div class="section-actions">
+        <button class="btn-primary" id="addSavingsBtn">+ Add Goal</button>
+      </div>
+      <div class="savings-goals-grid" id="savingsGoalsGrid">
+        <div class="empty-state">No savings goals yet</div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────── -->
+    <!-- SECTION: UPLOAD SLIP            -->
+    <!-- ──────────────────────────────── -->
+    <section class="section" id="section-upload">
+      <div class="card upload-card">
+        <div class="card-header">
+          <h2>Upload Payment Slip</h2>
+          <span class="card-badge">OCR Simulation</span>
+        </div>
+        <p class="upload-desc">Upload a bank transfer slip or receipt. The OCR engine will extract transaction data automatically.</p>
+        <div class="upload-zone" id="uploadZone">
+          <svg viewBox="0 0 24 24" class="upload-icon"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+          <p>Drag & drop your slip here</p>
+          <p class="upload-sub">or click to browse</p>
+          <input type="file" id="slipFileInput" accept="image/*,application/pdf" hidden />
+          <button class="btn-primary" id="browseBtn">Choose File</button>
+        </div>
+        <div class="ocr-result" id="ocrResult" style="display:none">
+          <div class="ocr-header">
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            OCR Result (Simulated)
+          </div>
+          <div class="ocr-fields" id="ocrFields"></div>
+          <div class="ocr-actions">
+            <button class="btn-secondary" id="ocrEditBtn">Edit Before Saving</button>
+            <button class="btn-primary" id="ocrSaveBtn">Save Transaction</button>
+          </div>
+        </div>
+        <div class="ocr-note">
+          <strong>Developer Note:</strong> This uses mock OCR data for demonstration. To integrate a real OCR API (e.g., Google Vision, AWS Textract, or Mindee), replace the <code>simulateOCR()</code> function in <code>script.js</code> with your API call.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ── MODALS ── -->
+
+  <!-- Transaction Modal -->
+  <div class="modal-overlay" id="txModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="txModalTitle">Add Transaction</h3>
+        <button class="modal-close" data-modal="txModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="txId" />
+        <div class="form-group">
+          <label>Description</label>
+          <input type="text" id="txDesc" placeholder="e.g. Lunch at MBK" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Amount (฿)</label>
+            <input type="number" id="txAmount" placeholder="0.00" min="0" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label>Type</label>
+            <select id="txType">
+              <option value="expense">Expense</option>
+              <option value="income">Income</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Category</label>
+            <select id="txCategory">
+              <option value="Food">Food</option>
+              <option value="Transport">Transport</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Bills">Bills</option>
+              <option value="Health">Health</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Salary">Salary</option>
+              <option value="Investment">Investment</option>
+              <option value="Debt Payment">Debt Payment</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="txDate" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-modal="txModal">Cancel</button>
+        <button class="btn-primary" id="saveTxBtn">Save Transaction</button>
       </div>
     </div>
+  </div>
 
-    <div class="form-section">
-      <h2>เพิ่มรายการ</h2>
-
-      <input type="text" id="title" placeholder="ชื่อรายการ">
-
-      <input type="number" id="amount" placeholder="จำนวนเงิน">
-
-      <select id="type">
-        <option value="income">รายรับ</option>
-        <option value="expense">รายจ่าย</option>
-        <option value="debt">หนี้สิน</option>
-      </select>
-
-      <input type="text" id="category" placeholder="หมวดหมู่">
-
-      <textarea id="note" placeholder="บันทึกเพิ่มเติม"></textarea>
-
-      <button onclick="addTransaction()">เพิ่มรายการ</button>
+  <!-- Debt Modal -->
+  <div class="modal-overlay" id="debtModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="debtModalTitle">Add Debt</h3>
+        <button class="modal-close" data-modal="debtModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="debtId" />
+        <div class="form-group">
+          <label>Debt Name</label>
+          <input type="text" id="debtName" placeholder="e.g. Car Loan, Credit Card" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Remaining Balance (฿)</label>
+            <input type="number" id="debtBalance" placeholder="0.00" min="0" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label>Interest Rate (%)</label>
+            <input type="number" id="debtRate" placeholder="0.0" min="0" step="0.1" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Monthly Payment (฿)</label>
+          <input type="number" id="debtPayment" placeholder="0.00" min="0" step="0.01" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-modal="debtModal">Cancel</button>
+        <button class="btn-primary" id="saveDebtBtn">Save Debt</button>
+      </div>
     </div>
+  </div>
 
-    <div class="upload-section">
-      <h2>📷 อ่านสลิปอัตโนมัติ</h2>
-
-      <input type="file" id="slipInput" accept="image/*">
-
-      <button onclick="readSlip()">อ่านสลิป</button>
-
-      <pre id="ocrResult"></pre>
+  <!-- Savings Modal -->
+  <div class="modal-overlay" id="savingsModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="savingsModalTitle">Add Savings Goal</h3>
+        <button class="modal-close" data-modal="savingsModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="savingsId" />
+        <div class="form-group">
+          <label>Goal Name</label>
+          <input type="text" id="savingsGoalName" placeholder="e.g. Emergency Fund, Vacation" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Current Amount (฿)</label>
+            <input type="number" id="savingsCurrent" placeholder="0.00" min="0" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label>Target Amount (฿)</label>
+            <input type="number" id="savingsTarget" placeholder="0.00" min="0" step="0.01" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-modal="savingsModal">Cancel</button>
+        <button class="btn-primary" id="saveSavingsBtn">Save Goal</button>
+      </div>
     </div>
+  </div>
 
-    <div class="history">
-      <h2>📄 รายการทั้งหมด</h2>
-
-      <ul id="transactionList"></ul>
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal modal-wide">
+      <div class="modal-header">
+        <h3>Settings</h3>
+        <button class="modal-close" data-modal="settingsModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-section">
+          <h4>Supabase Connection</h4>
+          <div class="form-group">
+            <label>Supabase URL</label>
+            <input type="text" id="settingsUrl" placeholder="https://xxxx.supabase.co" />
+          </div>
+          <div class="form-group">
+            <label>Anon Key</label>
+            <input type="text" id="settingsKey" placeholder="eyJhbGci..." />
+          </div>
+        </div>
+        <div class="settings-section">
+          <h4>Monthly Finances</h4>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Monthly Salary (฿)</label>
+              <input type="number" id="settingsSalary" placeholder="50000" />
+            </div>
+            <div class="form-group">
+              <label>Fixed Monthly Costs (฿)</label>
+              <input type="number" id="settingsFixed" placeholder="15000" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Monthly Savings Target (฿)</label>
+              <input type="number" id="settingsSavingsTarget" placeholder="5000" />
+            </div>
+            <div class="form-group">
+              <label>Currency Symbol</label>
+              <input type="text" id="settingsCurrency" placeholder="฿" maxlength="3" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-modal="settingsModal">Cancel</button>
+        <button class="btn-primary" id="saveSettingsBtn">Save & Reconnect</button>
+      </div>
     </div>
+  </div>
 
+  <!-- OCR Edit Modal -->
+  <div class="modal-overlay" id="ocrEditModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Review OCR Data</h3>
+        <button class="modal-close" data-modal="ocrEditModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Description</label>
+          <input type="text" id="ocrEditDesc" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Amount (฿)</label>
+            <input type="number" id="ocrEditAmount" />
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="ocrEditDate" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Category</label>
+            <select id="ocrEditCategory">
+              <option value="Food">Food</option>
+              <option value="Transport">Transport</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Bills">Bills</option>
+              <option value="Health">Health</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Type</label>
+            <select id="ocrEditType">
+              <option value="expense">Expense</option>
+              <option value="income">Income</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-modal="ocrEditModal">Cancel</button>
+        <button class="btn-primary" id="ocrConfirmSaveBtn">Confirm & Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notifications -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Confirm dialog -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h3>Confirm Delete</h3>
+        <button class="modal-close" data-modal="confirmModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmMessage">Are you sure you want to delete this item?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-modal="confirmModal">Cancel</button>
+        <button class="btn-danger" id="confirmDeleteBtn">Delete</button>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>
-
 </body>
 </html>
