@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Money Tracker</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Money Tracker Supabase</title>
+
+  <link rel="stylesheet" href="style.css"/>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
 
   <div class="container">
+
     <h1>💰 Money Tracker</h1>
 
     <div class="summary">
@@ -47,24 +51,32 @@
         <option value="debt">หนี้สิน</option>
       </select>
 
+      <input type="text" id="category" placeholder="หมวดหมู่">
+
+      <textarea id="note" placeholder="บันทึกเพิ่มเติม"></textarea>
+
       <button onclick="addTransaction()">เพิ่มรายการ</button>
     </div>
 
     <div class="upload-section">
-      <h2>อ่านสลิปอัตโนมัติ</h2>
+      <h2>📷 อ่านสลิปอัตโนมัติ</h2>
 
       <input type="file" id="slipInput" accept="image/*">
+
       <button onclick="readSlip()">อ่านสลิป</button>
 
       <pre id="ocrResult"></pre>
     </div>
 
     <div class="history">
-      <h2>รายการทั้งหมด</h2>
+      <h2>📄 รายการทั้งหมด</h2>
+
       <ul id="transactionList"></ul>
     </div>
+
   </div>
 
   <script src="script.js"></script>
+
 </body>
 </html>

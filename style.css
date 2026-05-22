@@ -1,32 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
-  background: #f4f6f9;
-  margin: 0;
+  background: #f3f4f6;
   padding: 20px;
 }
 
 .container {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: auto;
 }
 
 h1 {
   text-align: center;
   margin-bottom: 30px;
+  color: #111827;
 }
 
 .summary {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 15px;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 .card {
   padding: 20px;
-  border-radius: 15px;
+  border-radius: 16px;
   color: white;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 .income {
@@ -50,27 +56,32 @@ h1 {
 .history {
   background: white;
   padding: 20px;
-  border-radius: 15px;
+  border-radius: 16px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 input,
 select,
+textarea,
 button {
   width: 100%;
+  margin-top: 12px;
   padding: 12px;
-  margin-top: 10px;
   border-radius: 10px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
+  border: 1px solid #d1d5db;
+}
+
+textarea {
+  min-height: 90px;
 }
 
 button {
   background: #111827;
   color: white;
-  cursor: pointer;
   border: none;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 button:hover {
@@ -79,21 +90,26 @@ button:hover {
 
 ul {
   list-style: none;
-  padding: 0;
 }
 
 li {
-  background: #f3f4f6;
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 10px;
+  background: #f9fafb;
+  margin-bottom: 12px;
+  padding: 15px;
+  border-radius: 12px;
+  border-left: 6px solid #2563eb;
 }
 
 pre {
-  white-space: pre-wrap;
   background: #111827;
-  color: #00ff88;
+  color: #00ff90;
   padding: 15px;
   border-radius: 10px;
-  overflow-x: auto;
+  margin-top: 15px;
+  white-space: pre-wrap;
+}
+
+.delete-btn {
+  margin-top: 10px;
+  background: #dc2626;
 }

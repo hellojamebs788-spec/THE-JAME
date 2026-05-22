@@ -1,29 +1,53 @@
-# 💰 Money Tracker
+# 💰 Money Tracker + Supabase
 
-เว็บรายรับรายจ่าย พร้อมระบบอ่านสลิป OCR
-
-## ฟีเจอร์
-- เพิ่มรายรับ / รายจ่าย / หนี้สิน
-- สรุปเงินคงเหลือ
-- เก็บข้อมูลใน LocalStorage
-- อ่านสลิปด้วย OCR
-- ใช้งานบน GitHub Pages ได้
+เว็บรายรับรายจ่าย พร้อมเชื่อม Supabase และ OCR อ่านสลิป
 
 ---
 
-## วิธีใช้งาน
+## 📦 ไฟล์ในโปรเจกต์
 
-### 1. Upload ขึ้น GitHub
+- index.html
+- style.css
+- script.js
+- readme.md
 
-สร้าง Repository ใหม่ เช่น:
+---
+
+## 🚀 วิธีใช้งาน
+
+### 1. สร้าง Table ใน Supabase
+
+ใช้ SQL นี้:
+
+```sql
+create table transactions (
+  id uuid primary key default gen_random_uuid(),
+
+  title text,
+  amount numeric,
+  type text,
+  category text,
+  note text,
+
+  created_at timestamp with time zone default now()
+);
+```
+
+---
+
+### 2. Upload ขึ้น GitHub
+
+สร้าง Repository ใหม่
+
+เช่น:
 
 money-tracker
 
-อัปโหลดไฟล์ทั้งหมดขึ้น GitHub
+อัปโหลดทุกไฟล์ขึ้น GitHub
 
 ---
 
-### 2. เปิด GitHub Pages
+### 3. เปิด GitHub Pages
 
 ไปที่:
 
@@ -33,11 +57,9 @@ Settings → Pages
 
 Deploy from branch
 
-เลือก branch:
+เลือก:
 
 main
-
-เลือก folder:
 
 /root
 
@@ -45,13 +67,21 @@ Save
 
 ---
 
-## เทคโนโลยี
-- HTML
-- CSS
-- JavaScript
-- Tesseract.js OCR
+## ✅ ฟีเจอร์
+
+- เพิ่มรายรับ
+- เพิ่มรายจ่าย
+- เพิ่มหนี้สิน
+- สรุปยอด
+- อ่านสลิป OCR
+- เก็บข้อมูลใน Supabase
+- ใช้งานบนมือถือได้
 
 ---
 
-## Demo
-เปิด index.html ได้ทันที
+## 🔥 Supabase Config
+
+Project URL:
+https://afkjxrzuvuxxjtjypzcq.supabase.co
+
+เชื่อมเรียบร้อยใน script.js แล้ว
